@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import API from '../api/axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'react-toastify';
 
 const BlogForm = () => {
   const { id } = useParams(); // blog id for edit
@@ -34,7 +35,7 @@ const BlogForm = () => {
       API.get(`blogs/${id}/`)
         .then(res => {
           if (res.data.author.id !== user.id && !user.is_admin) {
-            alert('You are not authorized to edit this blog.');
+            toast.error('You are not authorized to edit this blog.');
             navigate('/');
             return;
           }
@@ -46,7 +47,10 @@ const BlogForm = () => {
             is_published: res.data.is_published || false,
           });
         })
-        .catch(err => console.error('Error fetching blog:', err))
+        .catch(err => {
+          console.error('Error fetching blog:', err);
+          toast.error('Error loading blog details.');
+        })
         .finally(() => setLoading(false));
     }
   }, [id, user, navigate]);
@@ -76,12 +80,15 @@ const BlogForm = () => {
       setLoading(true);
       if (id) {
         await API.put(`blogs/${id}/`, data);
+        toast.success('Blog updated successfully!');
       } else {
         await API.post('blogs/', data);
+        toast.success('Blog created successfully!');
       }
       navigate('/');
     } catch (err) {
       console.error('Error submitting blog:', err.response?.data || err);
+      toast.error('Something went wrong while saving the blog.');
       setError(err.response?.data || 'Something went wrong.');
     } finally {
       setLoading(false);
@@ -160,8 +167,6 @@ const BlogForm = () => {
 };
 
 export default BlogForm;
-
-
 
 
 

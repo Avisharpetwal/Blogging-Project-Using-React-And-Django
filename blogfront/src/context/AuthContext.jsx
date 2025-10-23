@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../api/axios';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AuthContext = createContext();
 
@@ -49,6 +51,8 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setTokens(null);
     localStorage.removeItem('tokens');
+    //logout
+    toast.success("You have been logged out successfully!");
     navigate('/login');
   };
 
