@@ -161,7 +161,7 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [debouncedQuery, setDebouncedQuery] = useState('');
   const [page, setPage] = useState(1);
-  const [sortOrder, setSortOrder] = useState('newest'); // newest | oldest | az | za
+  const [sortOrder, setSortOrder] = useState('newest'); 
 
   const blogsPerPage = 9;
 

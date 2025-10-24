@@ -1,4 +1,4 @@
-// yeh sahi wala hai abhi ke liye
+
 import React from 'react';
 
 const Sidebar = ({ categories, selected, onSelect }) => {
