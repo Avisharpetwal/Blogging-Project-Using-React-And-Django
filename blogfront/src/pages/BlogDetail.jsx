@@ -96,6 +96,8 @@ const BlogDetail = () => {
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState('');
 
+
+// -------------------All Blogs------------
   const fetchBlog = async () => {
     if (id === 'new') return;
     try {
@@ -103,45 +105,59 @@ const BlogDetail = () => {
       setBlog(data);
       setComments(data.comments || []);
     } catch (err) {
-      toast.error('Error fetching blog 😞');
+      toast.error('Error fetching blog ');
       console.error(err);
     }
   };
 
   useEffect(() => { fetchBlog(); }, [id]);
 
+
+// ------------------Comments--------------
   const handleComment = async () => {
     if (!commentText) return toast.warn('Please write a comment first ✍️');
     try {
       const { data } = await API.post(`blogs/${id}/comments/`, { comment: commentText });
       setComments([...comments, data]);
       setCommentText('');
-      toast.success('Comment added ✅');
+      toast.success('Comment added ');
     } catch (err) {
-      toast.error('Failed to add comment ❌');
+      toast.error('Failed to add comment ');
       console.error(err);
     }
   };
 
+  
+// -----------------------Like---------------------
   const handleLike = async () => {
-    try {
-      await API.post(`blogs/${id}/like-toggle/`);
-      fetchBlog();
-      toast.success('You liked this blog 👍');
-    } catch (err) {
-      toast.error('Failed to like blog ❌');
-      console.error(err);
-    }
-  };
+  try {
+    
+    const response = await API.post(`blogs/${id}/like-toggle/`);
+    
+   
+    fetchBlog();
 
+    
+    if (response.data.liked) {
+      toast.success('You liked this blog ');
+    } else {
+      toast.info('You unliked this blog ');
+    }
+  } catch (err) {
+    toast.error("You Can't Like Your Own Blog");
+    console.error(err);
+  }
+};
+
+// --------------------Delete A Blog------------------------
   const handleDelete = async () => {
     if (!window.confirm('Are you sure you want to delete this blog?')) return;
     try {
       await API.delete(`blogs/${id}/`);
-      toast.success('Blog deleted successfully 🗑️');
+      toast.success('Blog deleted successfully ');
       navigate('/my-blogs');
     } catch (err) {
-      toast.error('You are not authorized to delete this blog 🚫');
+      toast.error('You are not authorized to delete this blog ');
       console.error(err);
     }
   };
@@ -155,7 +171,7 @@ const BlogDetail = () => {
       {blog.image && (
         <img
           src={`http://127.0.0.1:8000${blog.image}`}
-          className="img-fluid mb-3"
+          className="img-fluid mb-1"
           alt={blog.title}
         />
       )}

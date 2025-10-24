@@ -5,8 +5,14 @@ const API = axios.create({
   baseURL: 'http://127.0.0.1:8000/api/',
 });
 
-
-
+// Attach access token
+API.interceptors.request.use((config) => {
+  const tokens = JSON.parse(localStorage.getItem('tokens'));
+  if (tokens && tokens.access) {
+    config.headers.Authorization = `Bearer ${tokens.access}`;
+  }
+  return config;
+});
 
 
 
@@ -246,14 +252,7 @@ const refreshToken = async () => {
   }
 };
 
-// Attach access token
-API.interceptors.request.use((config) => {
-  const tokens = JSON.parse(localStorage.getItem('tokens'));
-  if (tokens && tokens.access) {
-    config.headers.Authorization = `Bearer ${tokens.access}`;
-  }
-  return config;
-});
+
 
 // Handle 401 errors
 API.interceptors.response.use(

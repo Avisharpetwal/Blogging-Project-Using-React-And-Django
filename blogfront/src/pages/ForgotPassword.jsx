@@ -60,6 +60,8 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
+
+  // --------------For Forgot Password For A Email
   const handleSubmit = async (e) => {
     e.preventDefault();
 

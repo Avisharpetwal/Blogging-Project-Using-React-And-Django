@@ -22,6 +22,7 @@ const AdminDashboard = () => {
   const token = localStorage.getItem('tokens') ? JSON.parse(localStorage.getItem('tokens')).access : null;
   const authHeaders = token ? { Authorization: `Bearer ${token}` } : {};
 
+// --------------------------STATS-----------------------
   const fetchStats = async () => {
     try {
       const resStats = await API.get('stats/', { headers: authHeaders });
@@ -39,7 +40,7 @@ const AdminDashboard = () => {
       alert('Failed to fetch stats');
     }
   };
-
+// --------------------------ADD CATEGORY -----------------------
   const addCategory = async () => {
     if (!addCategoryName.trim()) return;
     try {
@@ -51,7 +52,7 @@ const AdminDashboard = () => {
       alert(err.response?.data?.detail || 'Failed to add category');
     }
   };
-
+// --------------------------UPDATE CATEGORY-----------------------
   const updateCategory = async (id) => {
     if (!editCategoryName.trim()) return;
     try {
@@ -64,7 +65,7 @@ const AdminDashboard = () => {
       alert(err.response?.data?.detail || 'Failed to update category');
     }
   };
-
+// --------------------------DELETE CATEGORY-----------------------
   const deleteCategory = async (id) => {
     if (!window.confirm('Are you sure you want to delete this category?')) return;
     try {
@@ -82,6 +83,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="container mt-4">
+      {/* Shows Total Blogs,Total Likes,Total Comments,Total Category */}
       <h2>Admin Dashboard</h2>
       <div className="row mb-4">
         <div className="col-md-3"><b>Total Blogs:</b> {stats.total_blogs}</div>
@@ -89,7 +91,7 @@ const AdminDashboard = () => {
         <div className="col-md-3"><b>Total Comments:</b> {stats.total_comments}</div>
         <div className="col-md-3"><b>Total Categories:</b> {stats.total_categories}</div>
       </div>
-
+      {/* Add A  New Category */}
       <h4>Manage Categories</h4>
       <div className="mb-3">
         <input
@@ -112,14 +114,18 @@ const AdminDashboard = () => {
                   value={editCategoryName}
                   onChange={e => setEditCategoryName(e.target.value)}
                 />
+                {/* Save A  New Category */}
                 <button className="btn btn-primary btn-sm me-2" onClick={() => updateCategory(cat.id)}>Save</button>
+                {/* Cancel A Category */}
                 <button className="btn btn-secondary btn-sm" onClick={() => setEditCategoryId(null)}>Cancel</button>
               </>
             ) : (
               <>
                 {cat.name}
                 <span>
+                  {/* Update A category */}
                   <button className="btn btn-sm btn-warning me-2" onClick={() => { setEditCategoryId(cat.id); setEditCategoryName(cat.name); }}>Edit</button>
+                  {/* Delete A Category */}
                   <button className="btn btn-sm btn-danger" onClick={() => deleteCategory(cat.id)}>Delete</button>
                 </span>
               </>
@@ -127,7 +133,7 @@ const AdminDashboard = () => {
           </li>
         ))}
       </ul>
-       
+       {/* All Register User Information */}
       <h4>Manage Users</h4>
       <table className="table table-bordered">
         <thead>

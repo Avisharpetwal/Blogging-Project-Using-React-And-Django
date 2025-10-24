@@ -65,7 +65,7 @@ const BlogForm = () => {
       setForm({ ...form, [name]: value });
     }
   };
-
+//---------------------- Save Information---------------
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');

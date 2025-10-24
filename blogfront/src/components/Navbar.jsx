@@ -1,44 +1,51 @@
+
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { ToastContainer } from 'react-toastify';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container">
-        <Link className="navbar-brand" to="/">Blogging</Link>
-        <div className="collapse navbar-collapse">
+        <Link className="navbar-brand" to="/">All Blog</Link>
+
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
-            {!user && (
+            <li className="nav-item">
+              <Link className="nav-link" to="/">Home</Link>
+            </li>
+
+            {user ? (
               <>
-                <li className="nav-item"><Link className="nav-link" to="/login">Login</Link></li>
-                <li className="nav-item"><Link className="nav-link" to="/register">Register</Link></li>
-            
-                
-              </>
-            )}
-            {user && !user.is_admin && (
-              <>
-                <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
-                <li className="nav-item"><Link className="nav-link" to="/my-blogs">My Blogs</Link></li>
-                <li className="nav-item"><Link className="nav-link" to="/blogs/new">Create Blog</Link></li>
-                <li className="nav-item"><Link className="nav-link" to="/profile">{user.username}</Link></li>
                 <li className="nav-item">
-                  <button className="btn btn-sm btn-outline-light" onClick={logout}>Logout</button>
+                  <Link className="nav-link" to="/my-blogs">My Blogs</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/profile">Profile</Link>
+                </li>
+                {user.is_admin && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/admin/dashboard">Admin Dashboard</Link>
+                  </li>
+                )}
+                <li className="nav-item">
+                  <button className="btn btn-link nav-link" onClick={logout}>Logout</button>
                 </li>
               </>
-            )}
-            {user && user.is_admin && (
+            ) : (
               <>
-                <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
-                <li className="nav-item"><Link className="nav-link" to="/admin/dashboard">Admin Dashboard</Link></li>
-                <li className="nav-item"><Link className="nav-link" to="/profile">{"👋"+user.username}</Link></li>
                 <li className="nav-item">
-                  <button className="btn btn-sm btn-outline-light" onClick={logout}>Logout</button>
-                  <ToastContainer />
+                  <Link className="nav-link" to="/login">Login</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/register">Register</Link>
                 </li>
               </>
             )}
@@ -50,6 +57,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
-
