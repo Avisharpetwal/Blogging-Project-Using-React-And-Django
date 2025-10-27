@@ -43,7 +43,7 @@ const BlogForm = () => {
             title: res.data.title,
             content: res.data.content,
             category_name: res.data.category?.name || '',
-            image: null, // file input starts empty
+            image: null, 
             is_published: res.data.is_published || false,
           });
         })

@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
 
   // ---------------Login(Username,Password)----------------
   const login = async (username, password, redirectBlogId=null) => {
-    const { data } = await API.post('auth/login/', { username, password });
+    const { data } = await API.post('auth/login/', { username, password, });
     setTokens(data);
     localStorage.setItem('tokens', JSON.stringify(data));
     const decoded = JSON.parse(atob(data.access.split('.')[1]));
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
       if (formData[key]) payload.append(key, formData[key]);
     });
     await API.post('auth/register/', payload);
-    // await login(formData.username, formData.password);
+    
   };
 // ----------------Logout-------------
   const logout = () => {
