@@ -3,6 +3,7 @@ from django.db import IntegrityError
 from django.utils import timezone
 from .models import User, Category, Blog, Comment
 
+# ---------- USER MODEL TESTS ----------
 class UserModelTest(TestCase):
 
     def setUp(self):
@@ -38,7 +39,7 @@ class UserModelTest(TestCase):
 
         self.assertFalse(duplicate_created)
 
-
+# ---------- CATEGORY MODEL TESTS ----------
 class CategoryModelTest(TestCase):
 
     def setUp(self):
@@ -64,7 +65,7 @@ class CategoryModelTest(TestCase):
 
         self.assertFalse(duplicate_created)
 
-
+# ---------- BLOG MODEL TESTS ----------
 class BlogModelTest(TestCase):
 
     def setUp(self):
@@ -111,7 +112,7 @@ class BlogModelTest(TestCase):
         self.blog.likes.add(another_user)
         self.assertEqual(self.blog.likes_count, 1)
 
-
+# ---------- COMMENT MODEL TESTS ----------
 class CommentModelTest(TestCase):
 
     def setUp(self):
@@ -133,6 +134,8 @@ class CommentModelTest(TestCase):
         self.assertIsNotNone(self.comment.deleted_at)
 
 
+
+# DJANGO SERIALIZER TESTS
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from rest_framework.exceptions import ValidationError
@@ -144,7 +147,7 @@ from .serializers import (
 
 
 User = get_user_model()
-
+# ---------- USER SERIALIZER ----------
 class UserSerializerTest(TestCase):
 
     def setUp(self):
@@ -161,7 +164,7 @@ class UserSerializerTest(TestCase):
         self.assertEqual(data['email'], "test@example.com")
         self.assertFalse(data['is_admin'])
 
-
+# ---------- CATEGORY SERIALIZER ----------
 class CategorySerializerTest(TestCase):
 
     def setUp(self):
@@ -173,7 +176,7 @@ class CategorySerializerTest(TestCase):
         self.assertEqual(data['name'], "Tech")
         self.assertEqual(data['description'], "Technology")
 
-
+# ---------- BLOG SERIALIZER ----------
 class BlogSerializerTest(TestCase):
 
     def setUp(self):
@@ -213,7 +216,7 @@ class BlogSerializerTest(TestCase):
         with self.assertRaises(ValidationError):
             serializer.is_valid(raise_exception=True)
 
-
+# ---------- COMMENT SERIALIZER ----------
 class CommentSerializerTest(TestCase):
 
     def setUp(self):
@@ -228,7 +231,7 @@ class CommentSerializerTest(TestCase):
         self.assertEqual(data['comment'], "Nice post!")
         self.assertEqual(data['author']['username'], "commenter")
 
-
+# ---------- REGISTER SERIALIZER ----------
 class RegisterSerializerTest(TestCase):
 
     def test_register_serializer_valid_data(self):
@@ -255,7 +258,7 @@ class RegisterSerializerTest(TestCase):
         with self.assertRaises(ValidationError):
             serializer.is_valid(raise_exception=True)
 
-
+# ---------- PASSWORD RESET SERIALIZERS ----------
 class PasswordResetSerializerTest(TestCase):
 
     def setUp(self):
@@ -282,7 +285,7 @@ class PasswordResetConfirmSerializerTest(TestCase):
         serializer = PasswordResetConfirmSerializer(data=data)
         self.assertTrue(serializer.is_valid())
 
-
+# ---------- TOKEN SERIALIZER ----------
 class MyTokenObtainPairSerializerTest(TestCase):
 
     def setUp(self):
@@ -295,7 +298,7 @@ class MyTokenObtainPairSerializerTest(TestCase):
         self.assertFalse(token['is_admin'])
 
 
-
+# DJANGO VIEW TESTS (API)
 from rest_framework import status
 from rest_framework.test import APITestCase
 from django.utils.http import urlsafe_base64_encode
