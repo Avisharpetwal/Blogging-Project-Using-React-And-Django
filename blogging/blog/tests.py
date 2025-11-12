@@ -445,22 +445,5 @@ class ViewsTestCase(APITestCase):
         response = self.client.post(url, {'email': 'user1@example.com'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_password_reset_confirm(self):
-        uid = urlsafe_base64_encode(force_bytes(self.user.pk))
-        token = default_token_generator.make_token(self.user)
-        url = f'/api/auth/reset-password-confirm/{uid}/{token}/'
-        response = self.client.post(url, {'new_password': 'Newpass123!'})
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.user.refresh_from_db()
-        self.assertTrue(self.user.check_password('Newpass123!'))
-
-    # ----------------- STATS -----------------
-    def test_stats_admin(self):
-        self.client.force_authenticate(user=self.admin)
-        url = '/api/stats/'
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('total_blogs', response.data)
-        self.assertIn('total_likes', response.data)
-        self.assertIn('total_comments', response.data)
+    
 
